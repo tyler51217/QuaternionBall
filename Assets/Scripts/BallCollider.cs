@@ -1,36 +1,38 @@
-using System.Collections;
-using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BallCollider : MonoBehaviour
 {
-
-    public static int scoreInt;
-    public TMP_Text scoreText;
-    void Start()
+    
+    
+    public Rigidbody2D ball;
+    public Button restartButton;
+    public Button mainMenuButton;
+    public GameObject paddle;
+    private const float INITIAL_FORCE = -100;
+    
+    
+    private void Start()
     {
-        
-        BallCollider.scoreInt = 0;
-        scoreText.text = "0";
+        ball.AddForce(transform.up * INITIAL_FORCE);
     }
 
     void OnCollisionEnter2D(Collision2D collision) 
     { 
         if (collision.gameObject.CompareTag("Paddle")) 
         {
-            Debug.Log("collider works");
-            scoreInt++;
-            scoreText.text = scoreInt.ToString();
+            ScoreUI.AddScore();
             return;
         }
 
         if (collision.gameObject.CompareTag("DeathPlane"))
         {
-            Debug.Log("game over");
+            restartButton.gameObject.SetActive(true);
+            mainMenuButton.gameObject.SetActive(true);
+            paddle.gameObject.SetActive(false);
         }
     }
+
     
-
-
+    
 }
